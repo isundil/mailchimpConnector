@@ -67,12 +67,12 @@ class MailchimpConnector
 		{
 			$result = array();
 			foreach ($data as $i)
-				$result[] = MailingList::fromMailchimpRequest($i);
+				$result[] = MailingList::fromMailchimpRequest($this, $i);
 			return $result;
 		}
 		foreach ($data as $i)
 			if ($i->id == $name || $i->name == $name)
-				return MailingList::fromMailchimpRequest($i);
+				return MailingList::fromMailchimpRequest($this, $i);
 		return null;
 	}
 

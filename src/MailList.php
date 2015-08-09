@@ -59,7 +59,13 @@ class MailingList
 	**/
 	private $allFields;
 
-	public function __construct()
+	/**
+	 * @var Mailchimp $context
+	 * Mailchimp connector
+	**/
+	private $context;
+
+	private function __construct()
 	{ }
 
 	/**
@@ -67,7 +73,7 @@ class MailingList
 	 * @param array $request
 	 * @return MailingList instance
 	**/
-	public static function fromMailchimpRequest($request)
+	public static function fromMailchimpRequest($context, $request)
 	{
 		$instance = new self();
 		$instance->id = $request->id;
@@ -81,9 +87,14 @@ class MailingList
 		$instance->subscribe_url_long = $request->subscribe_url_long;
 		$instance->stats = $request->stats;
 		$instance->allFields = $request;
+		$instance->context = $context;
 		return $instance;
 	}
 
+	/**
+	 * Get the list's statistics
+	 * @return array
+	**/
 	public function getStats()
 	{
 		$result = array();
@@ -92,12 +103,24 @@ class MailingList
 		return $result;
 	}
 
+	/**
+	 * Get the subscribed user list
+	 * @return array(MailchimpUser) user list
+	**/
+	public function getUsers()
+	{
+		// TODO
+	}
+
 	public function __get($key)
 	{
 		if ($key == "stats")
 			return $this->getStats();
+		else if ($key == "users")
+			return $this->getUsers();
 		else if (property_exists($this, $key))
 			return $this->$key;
+		return null;
 	}
 }
 

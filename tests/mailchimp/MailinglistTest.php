@@ -10,7 +10,7 @@ class MailinglistTest extends PHPUnit_Framework_TestCase
 		$this->assertContainsOnlyInstancesOf("\Mailchimp\MailingList", $mailingList);
 	}
 
-	public function getOneList()
+	public function testGetOneList()
 	{
 		$mailchimp = new \mailchimp\MailchimpConnector(APIKEY_TEST);
 		$list0 = $mailchimp->getLists(MAILINGLIST_NAME);
@@ -23,8 +23,16 @@ class MailinglistTest extends PHPUnit_Framework_TestCase
 		$this->assertInstanceOf("\Mailchimp\MailingList", $list0);
 		$this->assertEquals(MAILINGLIST_ID, $list0->id);
 		$this->assertEquals(MAILINGLIST_NAME, $list0->name);
+		$this->assertNull($list0->fail);
 		$this->assertNull($mailchimp->getLists("fail"));
 	}
 
+	public function testStats()
+	{
+		$mailchimp = new \mailchimp\MailchimpConnector(APIKEY_TEST);
+		$list0 = $mailchimp->getLists(MAILINGLIST_ID);
+		$stats = $list0->stats;
+		$this->assertInternalType("array", $stats);
+	}
 }
 
